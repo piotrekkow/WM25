@@ -48,7 +48,7 @@ if STEREO_CALIBRATION_DIR == 'mchtr1000/':
 
 # Camera calibration - https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html
 def calibrate_camera(images_dir, board_width, board_height, square_size):
-    print("\n--- Starting Camera Intrinsic Calibration ---")
+    print("--- Starting Camera Intrinsic Calibration ---")
     term_criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
     objp = np.zeros((board_height * board_width, 3), np.float32)
@@ -167,6 +167,7 @@ def main():
     T = np.float32([-KNOWN_HORIZONTAL_BASELINE_MM, 0, 0]) # Translation vector along the x-axis
     h, w = imgLeft.shape[:2]
     image_size_stereo = (w, h)
+    print(f"Rectifying with known horizontal baseline: {KNOWN_HORIZONTAL_BASELINE_MM} mm")
 
     R1, R2, P1, P2, Q, roi1, roi2 = cv2.stereoRectify(
         mtx, dist,
@@ -175,6 +176,7 @@ def main():
         R, T,
         alpha=0.9
     )
+    print(f"Rectification matrices:\nR1:\n{R1}\nR2:\n{R2}\nP1:\n{P1}\nP2:\n{P2}\nQ:\n{Q}")
         
     # --- 3D Point Cloud Generation ---
     print(f"\n--- Generating 3D Point Cloud ---")
@@ -212,8 +214,7 @@ def main():
         o3d.visualization.draw_geometries([pcd_final],
                                           window_name="Reconstructed 3D Point Cloud",
                                           width=1600, height=900)
-    print(f"--- Open3D Processing Finished ---")
-    print("\n--- Script Completed ---")
+    print("\nScript Completed.")
 
 
 if __name__ == "__main__":
