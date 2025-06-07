@@ -9,6 +9,11 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.ply
+*.pyproj
+*.pyproj.user
+WM25env/
+WM25env12/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
